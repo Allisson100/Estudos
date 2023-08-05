@@ -1,8 +1,8 @@
 Projeto na pasta Github/Testes/apiGithubRedux
 
-# Explicando o Redux Saga pra pedir requisição para a API do GitHub
+# Explicando o Redux Saga para pedir requisição para a API do GitHub
 
-Primeiro para configurar o Redux Saga temos que criar a estrutra de pastas dentro da pasta src.
+Primeiro para configurar o Redux Saga temos que criar a estrutura de pastas dentro da pasta src.
 
     store
         modules
@@ -76,13 +76,13 @@ Nesse caso estamos usando uma única api que é a API do github, primeiro temos 
 
 ##### ACTION githubUserRequest
 
-export function githubUserRequest({ user }: Props ) {
-return action ('@gitHubUser/GITHUB_USER_REQUEST', {
-user,
-})
-}
+    export function githubUserRequest({ user }: Props ) {
+        return action ('@gitHubUser/GITHUB_USER_REQUEST', {
+                    user,
+                })
+    }
 
-Essa action serve para dizermos que queremos utilizar a API, temos que passar o user como payload, pois utlizamos a variável user no link de requisição, para conseguirmos buscar users diferente.
+Essa action serve para dizermos que queremos utilizar a API, temos que passar o user como payload, pois utilizamos a variável user no link de requisição, para conseguirmos buscar users diferente.
 
 ### ACTION githubUserSuccess
 
@@ -110,7 +110,7 @@ E claro que em todas essas actions tem que ser tipadas.
 
 ### reducer.ts
 
-Após as actions temos uma ramificação, temos o Saga trabalhando nesse momentoe também o reducer. Vamos explicar o Reducer primeiro.
+Após as actions temos uma ramificação, temos o Saga trabalhando nesse momento e também o reducer. Vamos explicar o Reducer primeiro.
 
 Arquivo reducer.ts:
 
@@ -177,7 +177,7 @@ Arquivo type.ts:
         readonly error: boolean;
     }
 
-Aqui temos a interface do estado inicial que chamamos de GithubUserState e também temos o GithubUserActions que atribuimos para ele o ActionType que vem de uma biblioteca que instalamos para melhorar a inteligencia de nosso código.
+Aqui temos a interface do estado inicial que chamamos de GithubUserState e também temos o GithubUserActions que atribuimos para ele o ActionType que vem de uma biblioteca que instalamos para melhorar a inteligência de nosso código.
 
 Voltando para o arquivo reducer.ts podemos ver que temos uma função chamada githubUser e nela passamos dois parâmetros o state = initialState e também action. Temos que tipar as action e o state já está tipado, pois a nossa initialState já está tipado. Temos que tipar também o retorno dessa função que também vai possuir os valores de uma de nossas initialState.
 
@@ -191,7 +191,7 @@ Dentro dela precisamos criar o que queremos de alteração de variáveis depende
                     loadingGithubUserRequest: true,
                 }
 
-Nesse caso precisamos que quando alguma parte do código chamar a API do github, nossa variável de loadig chamada loadingGithubUserRequest seja TRUE, pois com essa afirmação podemos criar um componente de loading por exemplo.
+Nesse caso precisamos que quando alguma parte do código chamar a API do github, nossa variável de loading chamada loadingGithubUserRequest seja TRUE, pois com essa afirmação podemos criar um componente de loading por exemplo.
 
     case '@gitHubUser/GITHUB_USER_SUCCESS':
                 return {
@@ -202,7 +202,7 @@ Nesse caso precisamos que quando alguma parte do código chamar a API do github,
                     error: false,
                 }
 
-Nesse outro case, caso a requisição na API for um sucesso temos que obter os dados que queremos da API, precisamos dizer se houve a busca do usuário com a variável didGetUser, essa variável é semelhante com uma variável comum chamada isSigned para sabermos se o usuário efetuou com sucesso o login, temos também que mudar o estado do loading para falso, pois o careegamento já foi feito, e também temos que dizer que a variável erro foi falsa.
+Nesse outro case, caso a requisição na API for um sucesso temos que obter os dados que queremos da API, precisamos dizer se houve a busca do usuário com a variável didGetUser, essa variável é semelhante com uma variável comum chamada isSigned para sabermos se o usuário efetuou com sucesso o login, temos também que mudar o estado do loading para falso, pois o carregamento já foi feito, e também temos que dizer que a variável erro foi falsa.
 
     case '@gitHubUser/GITHUB_USER_FAILURE':
                 return {
@@ -256,17 +256,17 @@ No arquivo sagas.ts temos:
         takeLatest('@gitHubUser/GITHUB_USER_REQUEST', getGithubUser)
     ])
 
-Esse arquivo é a parte paralela que funciona ao mesmo tempo que o reducer. Utilizamos o Saga, pois o redux com a estrutura padrão não no permite trazer side effects e um dos side effects que ele desabilita é a requisição da API, por isso temos o SAGA e o THUNK para utilarmos, mas o THUNK não é muito utilizado mais por problemas passados.
+Esse arquivo é a parte paralela que funciona ao mesmo tempo que o reducer. Utilizamos o Saga, pois o redux com a estrutura padrão não nos permite trazer side effects e um dos side effects que ele desabilita é a requisição da API, por isso temos o SAGA e o THUNK para utilizarmos, mas o THUNK não é muito utilizado mais por problemas passados.
 
 Nesse arquivo temos uma função generator(estudar depois) que é representado com function\* e nela podemos usar o yield.
 
 É nessa parte que vamos buscar os nossos dados na API e salvá-los na store do redux.
 
-Como vamos fazer uma requisição é interesante utilizar try e catch.
+Como vamos fazer uma requisição é interessante utilizar try e catch.
 
-Precisamos desestruturar a variável user do payload, mais para frente vamos entender melhor isso. A const data é a constante que vai recebr todos os dados da API e nele utilizamos o yield com a função call para chamar a função e passamos para a função da api a variável user. Vale lembrar que caso usarmos o axios, podemos passar um terceiro parâmetro que seria o restante da rota para pegar algum dado específico da API, mas nesse caso dentro da função call chamar a função da api e passar a variável user que precisamos já é o necessário.
+Precisamos desestruturar a variável user do payload, mais para frente vamos entender melhor isso. A const data é a constante que vai receber todos os dados da API e nele utilizamos o yield com a função call para chamar a função e passamos para a função da api a variável user. Vale lembrar que caso usarmos o axios, podemos passar um terceiro parâmetro que seria o restante da rota para pegar algum dado específico da API, mas nesse caso dentro da função call chamar a função da api e passar a variável user que precisamos já é o necessário.
 
-Depois que temos a variável data com todas as informações precisamos filtrar esses dados e pegar somente o que precisamos utilzar.
+Depois que temos a variável data com todas as informações precisamos filtrar esses dados e pegar somente o que precisamos utilizar.
 
 Vale ressaltar que o SAGA é uma função paralela, mas depois dela ela faz o caminho do reducer de novo, pois precisamos filtrar os dados.
 
@@ -277,7 +277,7 @@ Vale ressaltar que o SAGA é uma função paralela, mas depois dela ela faz o ca
                 bio: data.bio,
             }))
 
-Depois de termos o dados na const data, temos que chamar a yield put, pois lembrar que definimos algumas variáveis na função da action githubUserSuccess, então é agora que configuramos ela.
+Depois de termos o dados na const data, temos que chamar a yield put, pois lembra que definimos algumas variáveis na função da action githubUserSuccess, então é agora que configuramos ela.
 
 Apenas para lembrar action githubUserSuccess:
 
@@ -292,7 +292,7 @@ Apenas para lembrar action githubUserSuccess:
 
 Voltando ao arquivo saga.ts no yield put fazemos a relação dos nomes lá da action com os nomes reais da api.
 
-Depois na parte do catch apenas chamamos a action githubUserFailure, pois pode ocorrer de termos um erros e isso vai chamar essa action que vai ativar o case do reducer @gitHubUser/GITHUB_USER_FAILURE e com isso mudar a variável error para true.
+Depois na parte do catch apenas chamamos a action githubUserFailure, pois pode ocorrer de termos um erro e isso vai chamar essa action que vai ativar o case do reducer @gitHubUser/GITHUB_USER_FAILURE e com isso mudar a variável error para true.
 
 E por fim utilizamos essa estrutura de exportação:
 
@@ -325,7 +325,7 @@ Arquivo types.ts:
         readonly error: boolean;
     }
 
-Eu já tinha colocado esse código na parte de reducer, mas coloquei de novo pra organização, é apenas a tipagem do initialState e das actions.
+Eu já tinha colocado esse código na parte de reducer, mas coloquei de novo para organização, é apenas a tipagem do initialState e das actions.
 
 ### Pasta modules arquivo rootReducer e rootSaga
 
@@ -341,7 +341,7 @@ Arquivo rootReducer:
 
 Não temos muito o que explicar aqui. Esse arquivo é apenas para juntar todos os reducer existentes no projeto.
 
-único detalhe aqui é a tipagem StoreState que vamos ver depois, pois ele vem de outro arquivo.
+Único detalhe aqui é a tipagem StoreState que vamos ver depois, pois ele vem de outro arquivo.
 
 Arquivo rootSaga:
 
@@ -356,7 +356,7 @@ Aqui temos a junção de todos os sagas que vamos utilizar no projeto.
 
 ### Mais funcionalidades
 
-Se tiver mos mais de uma funcionalidade no projeto é nesses dois arquivos que vamos juntar tudo, por exemplo caso utilizarmos a api do giuthub e do twitter.
+Se tivermos mais de uma funcionalidade no projeto é nesses dois arquivos que vamos juntar tudo, por exemplo caso utilizarmos a api do github e do twitter.
 
 O arquivo rootReducer ficaria assim:
 
@@ -431,3 +431,29 @@ Arquivo index.ts:
     export { store };
 
 Não tem muito o que falar, faz parte da criação da store também.
+
+### Como utilizar toda essa estrutra
+
+Arquivo index.tsx da página Home:
+
+    import { useSelector ,useDispatch } from 'react-redux'
+    import  {StoreState}  from '../../store/createStore'
+    import { githubUserRequest } from '../../store/modules/github/actions'
+
+    const {loadingGithubUserRequest} = useSelector((state: StoreState) => state.githubUser)
+    const {error} = useSelector((state: StoreState) => state.githubUser)
+    const {didGetUser} = useSelector((state: StoreState) => state.githubUser)
+
+    const dispatch = useDispatch()
+
+Para acessar as variáveis da store utilizamos o useSelector e precisamos usar o dispatch para chamar a api.
+
+    <SearchButton onClick={handleGithubApi}>Pesquisar</SearchButton>
+
+Temos esse botão que chama a função handleGithubApi:
+
+    const handleGithubApi = useCallback(async () => {
+        dispatch(githubUserRequest({user: `${inputValue}`}))
+    }, [inputValue , dispatch])
+
+E aqui utilizamos o dispatch para chamarmos a action githubUserRequest que chama a api e como parâmetro ali definimos o valor do user.

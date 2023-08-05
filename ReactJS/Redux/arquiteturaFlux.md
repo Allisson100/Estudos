@@ -1,13 +1,13 @@
 # Gerenciamento de estado e arquitetura FLUX
 
-Gerenciamento de estado é bascicamente um forma da gente controlar os estados da nossa aplicação.
+Gerenciamento de estado é basicamente um forma da gente controlar os estados da nossa aplicação.
 
-Em nossa palicação temos o estado global e o estado local
+Em nossa aplicação temos o estado global e o estado local
 
-- Estado Local são os estados de cada componente, exemplo State e Props. Aqui também além do prop drilling, nó não temos uma única fonte de verdade, ou seja, o componente C2 tem uma taxa de 5% i precisamos passsar isso para C1 e só depois para C3, nada impede de eu egrar esses dados em C2 e lterar a taxa para 6% em C1 por exemplo, não temos uma padronização.
+- Estado Local são os estados de cada componente, exemplo State e Props. Aqui também além do prop drilling, nós não temos uma única fonte de verdade, ou seja, o componente C2 tem uma taxa de 5% e precisamos passsar isso para C1 e só depois para C3, nada impede de eu gerar esses dados em C2 e alterar a taxa para 6% em C1 por exemplo, não temos uma padronização.
 
 - Estado Global temos a Context API.
-- Temos a feraamaneta também o MobX.
+- Temos também a ferramenta MobX.
 - Temos o Recoil.
 
 ### Redux
@@ -16,7 +16,7 @@ E temos o Redux que é bastante utilizado. Ele é a alternativa mais utilizada e
 
 Ele implemanta essa arquitetura escalável que é a arquitetura Fluxy.
 
-Redux e Context API resolvem problemas iguais, mas de forma diferentes e para contextos diferentes.
+Redux e Context API resolvem problemas iguais, mas de formas diferentes e para contextos diferentes.
 
 Mas o Redux ele vai ser utilizado em projetos maiores, ele vai padronizar o fluxo de operações.
 
@@ -34,7 +34,7 @@ Basicamente nessa arquitetura vamos ter quatro papéis:
   É o nosso ponto de partida.
 
 - Actions, exemplo: (Type: @cart/ADD_ITEM ) / (Payload: { item })
-  As actions são basicamente funções que estão conectadas a um tipo, então cada action tem um tipo e ela também vai receber a informação que estamos passando para ela e vai repassar essa informkação para o Dispatcher.
+  As actions são basicamente funções que estão conectadas a um tipo, então cada action tem um tipo e ela também vai receber a informação que estamos passando para ela e vai repassar essa informação para o Dispatcher.
 
 - Dispatcher, é o ato da Action salvar essa informação na Store.
 
@@ -43,7 +43,7 @@ Basicamente nessa arquitetura vamos ter quatro papéis:
 
 Então temos a view que é nosso componente, ele vai disparar uma Action que está ligado a um type, essa Action vai fazer um Dispatch e vai salvar a informação na store. Com os dados na Store podemos acessá-los em qualquer componente com uma single source of truth (Única fonte de verdade).
 
-Mas temos um problema nesse fluxo, todos os itens do nosso fluxo são funções puras e funções puras não podem ter side effects, em nenum desses pontos do fluxo eu não posso fazer uma chamada a API.
+Mas temos um problema nesse fluxo, todos os itens do nosso fluxo são funções puras e funções puras não podem ter side effects, em nenhum desses pontos do fluxo eu não posso fazer uma chamada a API.
 
 Por exemplo se quisermos utilizar uma API para fazer o calculo do frete como fariamos isso? Umas das alternativas que temos é fazer a requisição no componente antes de enviarmos os dados para a Store.
 
@@ -95,7 +95,7 @@ Porém na parte de Action ela se ramifica, ou seja, vamos ter um fluxo paralelo 
 
 - E do saga chamamos outras actions
 
-É meio difícil de entender, mas basicamente vai ocorrer dois fluxos paralelos a partir da Action, entõ vamos ter o fluxo original com:
+É meio difícil de entender, mas basicamente vai ocorrer dois fluxos paralelos a partir da Action, então vamos ter o fluxo original com:
 
     Componente - Action - Reducer - Store - Componente
                 |

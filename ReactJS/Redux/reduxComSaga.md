@@ -1,29 +1,29 @@
-Arquivo do projeto dentro da pasta especialista react, nome da aula: Dominado Redux com SAGA.
+Arquivo do projeto dentro da pasta especialista react, nome da aula: Dominando Redux com SAGA.
 
-# Dominado Redux com SAGA
+# Dominando Redux com SAGA
 
-Para começar vamos adicionar os pcotes para utilizar o redux:
+Para começar vamos adicionar os pacotes para utilizar o redux:
 
     yarn add redux react-redux redux-saga
     yarn add @types/react-redux @types/redux-saga --dev
 
-A estruuta de pasta costuma ser a seguinte:
+A estrutura de pasta costuma ser a seguinte:
 
-Dentro de src criamos uma pasta chamada store, dentro da pasta store vamos ter uma divisão de módulos ou features, nosso caso vamos chamar de modules e dentro dessa pasta vamos ter outras pastas com cada um de nosso módulos, no nosso caso vamos chamar de authy, pois estamos fazendo uma página de autenticação.
+Dentro de src criamos uma pasta chamada store, dentro da pasta store vamos ter uma divisão de módulos ou features, no nosso caso vamos chamar de modules e dentro dessa pasta vamos ter outras pastas com cada um de nosso módulos, no nosso caso vamos chamar de authy, pois estamos fazendo uma página de autenticação.
 
 Dentro da pasta auth vamos ter alguns arquivos e esses arquivos contumam se repetir em cenários diferentes, primeiro arquivo:
 
-- actions.ts, digitamos:
+Actions.ts, digitamos:
 
-  function signInRequest() {
-  return {
-  type: 'SIGN_IN_REQUEST', // Único valor obrigatório
-  payload: {
+    function signInRequest() {
+        return {
+            type: 'SIGN_IN_REQUEST', // Único valor obrigatório
+            payload: {
 
+                }
             }
-        }
 
-  }
+    }
 
 Apenas o type é obrigatório, pois tem casos por exemplo, SING_OUT_REQUEST, que só com esse tipo conseguimos fazer um clear no local storage sem precisarmos do payload.
 
@@ -37,7 +37,7 @@ Apenas o type é obrigatório, pois tem casos por exemplo, SING_OUT_REQUEST, que
         }
     }
 
-Nossa action é basicamente uma função que pode ou não receber parâmetros e que vai retornar sempre um tipo e se precisar um payload que vão ser as informações dos parâmetros que vamos repassar posteriormente. Uma boa prática para não ter conflitos de actions é dar o nome da action referente ao contexto, no nosso caso @auth, pois duas actions com o mesmo type vai ocasionar em um bug.
+Nossa action é basicamente uma função que pode ou não receber parâmetros e que vai retornar sempre um tipo e se precisar de um payload que vão ser as informações dos parâmetros que vamos repassar posteriormente. Uma boa prática para não ter conflitos de actions é dar o nome da action referente ao contexto, no nosso caso @auth, pois duas actions com o mesmo type vai ocasionar em um bug.
 
 Segundo arquivo:
 
@@ -80,14 +80,14 @@ Ele segue essa estrutra padrão. É comum retornar sempre uma cópia do nosso es
 
 Precisamos agora tipar as variáveis, para isso costumamos ter um arquivo de tipos, que é o nosso terceiro arquivo:
 
-- types.ts, e nele digitamos:
+types.ts, e nele digitamos:
 
-  export interface AuthState {
-  readonly loadingSignInRequest: boolean;
-  readonly isSignedIn: boolean;
-  }
+    export interface AuthState {
+        readonly loadingSignInRequest: boolean;
+        readonly isSignedIn: boolean;
+    }
 
-Para tipar a action vamos utlizar o :AnyAction, mas para ter uma inteligencia melhor lá no código vamos utilziar uma biblioteca e para isso digitamos:
+Para tipar a action vamos utlizar o :AnyAction, mas para ter uma inteligência melhor lá no código vamos utilizar uma biblioteca e para isso digitamos:
 
     yarn add typesafe-actions
 
@@ -125,7 +125,7 @@ Nosso reducer.ts fica assim:
         }
     }
 
-Porém nosso código está funcionando porque temos apenas uma action, mas quando precisarmos adcionar mais vai começar a ter conflitos por conta dessa nossa biblioteca que acabamos de instalar e para isso temos que fazer uma alteração no nosso arquivo actions.ts, ficando assim:
+Porém nosso código está funcionando porque temos apenas uma action, mas quando precisarmos adicionar mais vai começar a ter conflitos por conta dessa nossa biblioteca que acabamos de instalar e para isso temos que fazer uma alteração no nosso arquivo actions.ts, ficando assim:
 
     import { action } from "typesafe-actions/dist/action";
 
@@ -136,7 +136,7 @@ Porém nosso código está funcionando porque temos apenas uma action, mas quand
                 })
     }
 
-Basicamente de vez mandar um objeto que nem antes, estamos utilzando a função action() da biblioteca que instalamos e passamos para ela dois parâmetro que são o type da action e o payload caso precise.
+Basicamente de vez mandar um objeto que nem antes, estamos utilizando a função action() da biblioteca que instalamos e passamos para ela dois parâmetro que são o type da action e o payload caso precise.
 
 Dessa forma podemos configurar nossa Store, não configuramos antes, pois precisamos de pelo menos de uma função de reducer para configurá-la certinho.
 
@@ -160,7 +160,7 @@ Podemos simplificar dessa maneira:
         auth,
     })
 
-Dessa forma a gente combina todos os reducer e conforme for criando mais reducer é só ir exportando e ir adiconando nesse arquivo.
+Dessa forma a gente combina todos os reducer e conforme for criando mais reducer é só ir exportando e ir adicionando nesse arquivo.
 
 Agora dentro da pasta store vamos criar o arquivo createStore.ts e nele digitamos:
 
@@ -189,7 +189,7 @@ Agora precisamos tipar isso, ficando dessa forma:
         return createStore(reducers , enhancer)
     }
 
-Agora vamos criar um arquivos dentro da pasta store chamado index.ts, ele vai ser o arquivo responsável por chamar a função do arquivo createStore.ts, então nele digitamos:
+Agora vamos criar um arquivo dentro da pasta store chamado index.ts, ele vai ser o arquivo responsável por chamar a função do arquivo createStore.ts, então nele digitamos:
 
     import createStore from "./createStore.ts";
     import rootReducer from "./modules/rootReducer.ts";
@@ -247,7 +247,7 @@ Vamos importar o useSelector que vai nos ajudar a buscar nossas informações l�
 
     export default Teste
 
-Criei um componente para teste e dessa forma com o useSelector conseguimos utilizar alguma variável de nossa action.
+Criei um componente para teste e dessa forma com o useSelector conseguimos utilizar alguma variável de nossa store.
 
 Código final:
 
@@ -274,13 +274,13 @@ Código final:
 
 Utilizamos a const { loadingSignInRequest } com o useSelector para obtermos o valor dessa variável que definimos no initial state no arquivo reducer.ts.
 
-Depois usamos o dispatch() fazer a chamada para a action mas precisamos colocá-la em uma constante:
+Depois usamos o dispatch() para fazer a chamada para a action, mas precisamos colocá-la em uma constante:
 
     const dispatch = useDispatch()
 
-No evento de onClick do botão chamamos esse dispatch e passsamos como parâmetro a função que criamos na action:
+No evento de onClick do botão chamamos esse dispatch e passamos como parâmetro a função que criamos na action:
 
-import { action } from "typesafe-actions";
+    import { action } from "typesafe-actions";
 
     export function signInRequest({ email , password }: { email: string; password: string }) {
         return action('@auth/SIGN_IN_REQUEST', {
@@ -289,7 +289,7 @@ import { action } from "typesafe-actions";
                 })
     }
 
-Dentro dessa função passamos o emial e o password como parâmetros.
+Dentro dessa função passamos o email e o password como parâmetros.
 
 No nosso arquivo reducer.ts:
 
@@ -313,9 +313,9 @@ No nosso arquivo reducer.ts:
         }
     }
 
-Ele tem função de ficar ouvindo esse action como se fosse eventListener, e nesse caso chamamo a action através do botão, o reducer ouviu e fez o switch case e nesse caso pedimos para trocar o valor da variável loadingSignInRequest de false para true e dessa forma conseguimos mudar o valor de uma variável.
+Ele tem função de ficar ouvindo esse action como se fosse eventListener, e nesse caso chamamos a action através do botão, o reducer ouviu e fez o switch case e nesse caso pedimos para trocar o valor da variável loadingSignInRequest de false para true e dessa forma conseguimos mudar o valor de uma variável.
 
-Um pouco complexo então vou ter que estudar mias depois.
+Um pouco complexo então vou ter que estudar mais depois.
 
 ### Adicionando o Redux Saga na aplicação
 
@@ -327,7 +327,7 @@ Vamos criar a action do Saga agora. No arquivo action.ts adicionamos a seguinte 
                 })
     }
 
-Pesquisar sobre generators javaScript.
+(Pesquisar sobre generators javaScript.)
 
 E agora dentro da pasta auth vamos criar nosso quarto arquivo chamado sagas.ts.
 
@@ -365,9 +365,9 @@ Dentro do arquivo sagas.ts digitamos:
     ])
 
 O takeLatest sempre vai pegar a última vez que aquela action foi disparada .
-Temos também o takeEvery que vai pegar todas as actions, exemplo o chat de mensagem, se o usuário está pasando vris mensagens muito rapido, nós queremos pegar todas elas e não apenas a última.
+Temos também o takeEvery que vai pegar todas as actions, exemplo o chat de mensagem, se o usuário está pasando várias mensagens muito rápido, nós queremos pegar todas elas e não apenas a última.
 
-Agora vamos criar um arquivo dentro da pasta modules chamado rootSaga.ts ele vai fazer a mesma coisa que o rootReducer fez, vai pegar tdos os sagas de nossos modules. Então nele digitamos:
+Agora vamos criar um arquivo dentro da pasta modules chamado rootSaga.ts ele vai fazer a mesma coisa que o rootReducer fez, vai pegar todos os sagas de nossos modules. Então nele digitamos:
 
     import auth from './auth/sagas'
     import { all } from 'redux-saga/effects'
@@ -395,7 +395,7 @@ E no nosso arquivo index.ts vamos fazer a configuração desse middleware Saga, 
 
     export { store }
 
-No nosso caso a requisição vai falhar, mas não tem problema. Precisamos agora ir no reducer.ts e colcoar outro case lá, então o arquivo fica:
+No nosso caso a requisição vai falhar, mas não tem problema. Precisamos agora ir no reducer.ts e colocar outro case lá, então o arquivo fica:
 
     import { AuthActions, AuthState } from "./types";
 
