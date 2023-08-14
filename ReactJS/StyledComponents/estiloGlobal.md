@@ -4,7 +4,7 @@ Primeiro precisamos instalar:
 
     yarn add styled-components
 
-Para cirar um estilo global com as formatações precisamos criar uma pasta dentro da pasta src com o nome styles e dentro da pasta styles criar um arquivo chamado global.js ou global.ts e nele digitamos:
+Para criar um estilo global com as formatações precisamos criar uma pasta dentro da pasta src com o nome styles e dentro da pasta styles criar um arquivo chamado global.js ou global.ts e nele digitamos:
 
     import { createGlobalStyle } from 'styled-components'
 
