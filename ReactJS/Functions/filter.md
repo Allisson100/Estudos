@@ -1,4 +1,4 @@
-# Filter
+# filter()
 
 Como usar o filter para fazer uma pesquisa em tempo real em uma lista:
 
