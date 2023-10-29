@@ -32,7 +32,7 @@ Outro exemplo:
         ...cliente.endereco[0],
     }
 
-Dessa forma ele espealha o objeto que está dentro de enderecos, o que facilita se não deveriamos fazer o seguinte:
+Dessa forma ele espelha o objeto que está dentro de enderecos, o que facilita se não deveriamos fazer o seguinte:
 
     const encomenda = {
         destinatario: cliente.nome,
