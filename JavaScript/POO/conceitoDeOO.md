@@ -1,4 +1,4 @@
-# 1. ConceitoDeOO
+# ConceitoDeOO
 
 # Programação orientada a objeto com Javascript
 
