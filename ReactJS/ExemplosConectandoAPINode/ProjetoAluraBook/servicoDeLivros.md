@@ -1,6 +1,23 @@
-# Criando serviço de livros
+# Serviço de livros na Home
 
-Criamos dentro de src uma pasta chamada servicos que será onde vamos fazer nossas requisições. Dentro dela criamos um arquivo chamado livros.js e nele digitamos:
+Agora sim conectamos nosso FrontEnd com o BackEnd.
+
+No componente Pesquisa arrumas o useEffect:
+
+    useEffect(() => {
+
+        async function fetchLivros () {
+            const livrosDaApi = await getLivros()
+            setLivros(livrosDaApi)
+        }
+
+        fetchLivros()
+
+    }, [])
+
+Pois como sabemos requisições são assincronas e é dessa forma que utilizamos funções assincronas no useEffect.
+
+Também arrumamos a função do getLivros em nosso servicos:
 
     import axios from 'axios'
 
@@ -8,8 +25,8 @@ Criamos dentro de src uma pasta chamada servicos que será onde vamos fazer noss
         baseURL: 'http://localhost:8000/livros'
     })
 
-    function getLivros() {
-        const response = livrosApi.get('/')
+    async function getLivros() {
+        const response = await livrosApi.get('/')
 
         return response.data
     }
@@ -18,11 +35,31 @@ Criamos dentro de src uma pasta chamada servicos que será onde vamos fazer noss
         getLivros,
     }
 
-Utilizamos o axios e criamos uma instancia dele com a const livrosApi.
+E alteramos uma coisa em nosso código do BackEnd.
 
-Após isso podemos utilizar o métodos get, delete, etc para fazer as quisições para as rotas necessárias.
+No arquivo app.js acrescentamos o cors:
 
-Nesse primeiro caso apenas criamos uma função chamada getLivros onde vamos fazer uma requisição do tipo get para a rota / da rota /livros, pois foi dessa forma que criamos lá no servidor node.
+    const express = require('express')
+    const rotaLivro = require('./rotas/livros')
+    const cors = require('cors')
 
-E depois apenas exportamos essa função.
+    const app = express()
+    app.use(express.json())
+    app.use(cors({origin: '*'}))
 
+    app.use('/livros', rotaLivro )
+
+
+    const port = 8000
+
+    app.listen(port, () => {
+        console.log(`App running, port: ${port}`);
+    })
+
+Por segurança a nossa aplicação frontend não pode simplesmente fazer uma requisição em nosso servidor, enbtão devemos utilizar a biblioteca cors para nos ajudar controlar quem pode e quem não pode acessar nossa aplicação.
+
+Nesse caso configuramos ele com um '*', pois como é apenas um servidor de estudos, qualuqer um pode acessar.
+
+Caso quisermos dar acesso a uma url especifica podemos fazer assim:
+
+    app.use(cors({origin: 'http://localhost:3001'}))
